@@ -1,0 +1,28 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: $footer-height;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  text-align: center;
+
+  background: map-get($theme-colors, primary);
+  color: white;
+  height: $footer-height;
+
+  ul {
+    @extend .list-inline;
+  }
+
+  a {
+    color: white;
+  }
+}

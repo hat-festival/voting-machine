@@ -1,0 +1,7 @@
+<%
+libs = {
+  ubuntu: '//fonts.googleapis.com/css?family=Ubuntu+Mono'
+}.each_pair do |name, url| %>
+  <!-- <%= name %> -->
+  <link rel='stylesheet' href='<%= url %>'>
+<% end %>

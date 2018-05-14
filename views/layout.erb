@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <%= erb :'includes/header' %>
+  <body>
+    <%= erb :'includes/github-corner' if @github_url %>
+    <%= erb :'includes/nav' %>
+    <div class='container'>
+      <%= yield %>
+    </div>
+    <%= erb :'includes/footer' %>
+  </body>
+</html>
