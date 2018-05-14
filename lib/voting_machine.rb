@@ -4,6 +4,7 @@ require 'json'
 require 'yaml'
 require 'sidekiq'
 
+require_relative 'voting_machine/racks'
 require_relative 'voting_machine/vote_worker'
 
 module VotingMachine
