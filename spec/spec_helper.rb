@@ -2,6 +2,7 @@ require 'coveralls'
 Coveralls.wear_merged!
 
 require 'rack/test'
+require 'rspec-sidekiq'
 require 'voting_machine'
 
 RSpec.configure do |config|
