@@ -16,6 +16,14 @@ module VotingMachine
           'app' => 'VotingMachine'
         }
       )
+    context 'POST' do
+      it 'receives a vote' do
+        post '/vote', { choice: 0 }.to_json
+        expect(last_response).to be_ok
+        expect(VoteWorker).to have_enqueued_sidekiq_job(
+          {'choice' => 'One hundred duck-sized horses?'}
+        )
+      end
     end
   end
 end

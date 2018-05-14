@@ -15,9 +15,9 @@ namespace :run do
     sh 'rackup -o 0.0.0.0'
   end
 
-  desc 'watch and compile sass'
-  task :sass do
-    sh 'sass --update --force public/sass:public/css'
-    sh 'sass --watch public/sass:public/css'
+  desc 'start redis and run sidekiq'
+  task :queue do
+    sh 'redis-server &'
+    sh 'sidekiq -r ./lib/voting_machine.rb'
   end
 end

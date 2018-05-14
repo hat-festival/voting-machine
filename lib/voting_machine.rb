@@ -2,9 +2,11 @@ require 'sinatra/base'
 require 'tilt/erubis'
 require 'json'
 require 'yaml'
+require 'sidekiq'
 
 require_relative 'voting_machine/helpers'
 require_relative 'voting_machine/racks'
+require_relative 'voting_machine/vote_worker'
 
 module VotingMachine
   class App < Sinatra::Base
@@ -33,6 +35,12 @@ module VotingMachine
 
     # start the server if ruby file executed directly
     run! if app_file == $0
+    post '/vote' do
+      choice = JSON.parse(request.body.read)['choice'].to_i
+      VoteWorker.perform_async({
+        choice: QUESTION['options'][choice]
+      })
+    end
 
     not_found do
       status 404

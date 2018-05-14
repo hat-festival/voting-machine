@@ -4,9 +4,11 @@ ruby '2.5.0'
 gem 'sinatra', '~> 1.4'
 gem 'rake'
 gem 'puma'
+gem 'sidekiq'
 
 group :test do
   gem 'rspec'
+  gem 'rspec-sidekiq'
   gem 'guard'
   gem 'guard-rspec'
   gem 'coveralls'
