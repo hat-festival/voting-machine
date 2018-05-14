@@ -42,6 +42,25 @@ module VotingMachine
       })
     end
 
+    options '*' do
+      response.headers['Allow'] = [
+        'HEAD',
+        'GET',
+        'PUT',
+        'POST',
+        'DELETE',
+        'OPTIONS'
+      ]
+      response.headers['Access-Control-Allow-Headers'] = [
+        'X-Requested-With',
+        'X-HTTP-Method-Override',
+        'Content-Type',
+        'Cache-Control',
+        'Accept'
+      ]
+      200
+    end
+
     not_found do
       status 404
       @title = '404'
