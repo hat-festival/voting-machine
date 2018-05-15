@@ -29,6 +29,17 @@ module VotingMachine
       QUESTION.to_json
     end
 
+    get '/addresses' do
+      {
+        addresses: Socket.
+                   ip_address_list.
+                   select { |a| a.ipv4? }.
+                   map { |a| a.ip_address }.
+                   delete_if { |a| a[0..2] == '127' }.
+                   sort
+      }.to_json
+    end
+
     post '/vote' do
       choice = JSON.parse(request.body.read)['choice'].to_i
       VoteWorker.perform_async({

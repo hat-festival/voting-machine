@@ -52,5 +52,13 @@ module VotingMachine
         expect(URI.parse(last_response.header['Location']).path).to eq '/question'
       end
     end
+
+    context 'addresses' do
+      it 'exposes a list of ip addresses' do
+        get '/addresses'
+        expect(last_response).to be_ok
+        expect(JSON.parse(last_response.body)['addresses']).to be_an Array
+      end
+    end
   end
 end
