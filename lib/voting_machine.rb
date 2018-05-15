@@ -4,7 +4,6 @@ require 'json'
 require 'yaml'
 require 'sidekiq'
 
-require_relative 'voting_machine/racks'
 require_relative 'voting_machine/vote_worker'
 
 module VotingMachine
@@ -16,6 +15,11 @@ module VotingMachine
         )
       )
     )
+
+    before do
+      headers 'Access-Control-Allow-Origin' => '*',
+              'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST']
+    end
 
     get '/' do
       redirect '/question', 302
