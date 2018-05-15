@@ -26,5 +26,13 @@ module VotingMachine
         )
       end
     end
+
+    context 'redirect' do
+      it 'redirects to the question' do
+        get '/'
+        expect(last_response.status).to eq 302
+        expect(URI.parse(last_response.header['Location']).path).to eq '/question'
+      end
+    end
   end
 end
