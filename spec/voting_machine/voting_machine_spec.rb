@@ -27,6 +27,24 @@ module VotingMachine
       end
     end
 
+    context 'CORS headers' do
+      it 'sets the correct headers' do
+        options '/vote'
+        expect(last_response).to be_ok
+        expect(last_response.original_headers['Access-Control-Allow-Origin']).to eq '*'
+        expect(last_response.original_headers['Access-Control-Allow-Methods']).to eq (
+          ['OPTIONS', 'GET', 'POST']
+        )
+        expect(last_response.original_headers['Access-Control-Allow-Headers']).to eq (
+          ['X-Requested-With', 'X-HTTP-Method-Override', 'Content-Type',
+           'Cache-Control', 'Accept']
+        )
+        expect(last_response.original_headers['Allow']).to eq (
+          ['HEAD', 'GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
+        )
+      end
+    end
+
     context 'redirect' do
       it 'redirects to the question' do
         get '/'
