@@ -3,6 +3,7 @@ require 'singleton'
 require 'json'
 require 'yaml'
 require 'sidekiq'
+require 'socket'
 
 require_relative 'voting_machine/vote_worker'
 
