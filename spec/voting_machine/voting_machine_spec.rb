@@ -8,10 +8,10 @@ module VotingMachine
           {
             'description' => 'Ducks or Horses?',
             'premise' => 'Would you rather fight',
-            'options' => [
-              'One hundred duck-sized horses?',
-              'One horse-sized duck?'
-            ]
+            'options' => {
+              'horses' => 'One hundred duck-sized horses?',
+              'duck' => 'One horse-sized duck?'
+            } 
           }
         )
       end
@@ -19,10 +19,10 @@ module VotingMachine
 
     context 'POST' do
       it 'receives a vote' do
-        post '/vote', { choice: 0 }.to_json
+        post '/vote', { choice: :horses }.to_json
         expect(last_response).to be_ok
         expect(VoteWorker).to have_enqueued_sidekiq_job(
-          {'choice' => 'One hundred duck-sized horses?'}
+          {'choice' => 'horses'}
         )
       end
     end

@@ -1,3 +1,8 @@
+PATH
+  remote: ../equestreum
+  specs:
+    equestreum (0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -96,6 +101,7 @@ PLATFORMS
 
 DEPENDENCIES
   coveralls
+  equestreum!
   guard
   guard-rspec
   pry

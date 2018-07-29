@@ -4,6 +4,7 @@ require 'json'
 require 'yaml'
 require 'sidekiq'
 require 'socket'
+require 'equestreum'
 
 require_relative 'voting_machine/vote_worker'
 
@@ -42,9 +43,9 @@ module VotingMachine
     end
 
     post '/vote' do
-      choice = JSON.parse(request.body.read)['choice'].to_i
+      choice = JSON.parse(request.body.read)['choice']
       VoteWorker.perform_async({
-        choice: QUESTION['options'][choice]
+        choice: choice
       })
     end
 

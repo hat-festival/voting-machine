@@ -3,7 +3,7 @@ module VotingMachine
     include Sidekiq::Worker
 
     def perform params
-      puts "Got a vote: #{params}"
+      Equestreum::Chain.grow params['choice'].to_sym
     end
   end
 end
