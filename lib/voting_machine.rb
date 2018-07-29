@@ -21,6 +21,7 @@ module VotingMachine
     before do
       headers 'Access-Control-Allow-Origin' => '*',
               'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST']
+      Equestreum::Chain.init 
     end
 
     get '/' do
@@ -40,6 +41,10 @@ module VotingMachine
                    delete_if { |a| a[0..2] == '127' }.
                    sort
       }.to_json
+    end
+
+    get '/results' do
+      Equestreum::Chain.aggregate.to_json
     end
 
     post '/vote' do

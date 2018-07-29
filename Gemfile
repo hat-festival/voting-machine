@@ -5,6 +5,7 @@ gem 'sinatra', '~> 1.4'
 gem 'rake'
 gem 'puma'
 gem 'sidekiq'
+gem 'foreman'
 gem 'equestreum', path: '../equestreum'
 
 group :test do
