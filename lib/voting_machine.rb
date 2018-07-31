@@ -20,7 +20,8 @@ module VotingMachine
 
     before do
       headers 'Access-Control-Allow-Origin' => '*',
-              'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST']
+              'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST'],
+              'Content-type' => 'application/json'
       Equestreum::Chain.init 
     end
 
@@ -45,6 +46,10 @@ module VotingMachine
 
     get '/results' do
       Equestreum::Chain.aggregate.to_json
+    end
+
+    get '/chain' do 
+      Equestreum::Chain.revive.reverse.map { |b| b.to_h }.to_json
     end
 
     post '/vote' do
