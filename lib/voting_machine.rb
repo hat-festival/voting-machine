@@ -51,7 +51,8 @@ module VotingMachine
     end
 
     get '/chain' do
-      Equestreum::Chain.revive.reverse.map { |b| b.to_h }.to_json
+      last = params[:length] ? params[:length].to_i : -1
+      Equestreum::Chain.revive.reverse[0..last].map { |b| b.to_h }.to_json
     end
 
     post '/vote' do
