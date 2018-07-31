@@ -5,8 +5,8 @@ module VotingMachine
     def perform params
       choice = params['choice']
       Equestreum::Chain.grow choice.to_sym
-      fork { exec 'mpg123','-q', "public/media/sounds/#{choice}.mp3" }
-      wait
+      Process.fork { exec 'mpg123','-q', "public/media/sounds/#{choice}.mp3" }
+      Process.wait2
     end
   end
 end
