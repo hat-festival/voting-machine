@@ -10,6 +10,8 @@ require_relative 'voting_machine/vote_worker'
 
 module VotingMachine
   class App < Sinatra::Base
+    set :public_folder, 'public'
+
     QUESTION = YAML.load(
       File.open(
         File.join(
@@ -22,7 +24,7 @@ module VotingMachine
       headers 'Access-Control-Allow-Origin' => '*',
               'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST'],
               'Content-type' => 'application/json'
-      Equestreum::Chain.init 
+      Equestreum::Chain.init
     end
 
     get '/' do
@@ -48,7 +50,7 @@ module VotingMachine
       Equestreum::Chain.aggregate.to_json
     end
 
-    get '/chain' do 
+    get '/chain' do
       Equestreum::Chain.revive.reverse.map { |b| b.to_h }.to_json
     end
 
