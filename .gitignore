@@ -1,4 +1,4 @@
 coverage/
 .sass-cache
 chain/
-public/media/sounds/coin.mp3
+public/media/sounds/*.mp3

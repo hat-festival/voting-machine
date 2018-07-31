@@ -3,8 +3,10 @@ module VotingMachine
     include Sidekiq::Worker
 
     def perform params
-      Equestreum::Chain.grow params['choice'].to_sym
-      fork { exec 'mpg123','-q', 'public/media/sounds/coin.mp3' }
+      choice = params['choice']
+      Equestreum::Chain.grow choice.to_sym
+      fork { exec 'mpg123','-q', "public/media/sounds/#{choice}.mp3" }
+      wait
     end
   end
 end
