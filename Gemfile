@@ -6,6 +6,7 @@ gem 'rake'
 gem 'puma'
 gem 'sidekiq'
 gem 'foreman'
+gem 'pagy'
 gem 'equestreum', path: '../equestreum'
 
 group :test do

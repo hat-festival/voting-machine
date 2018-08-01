@@ -3,22 +3,23 @@ require 'singleton'
 require 'json'
 require 'yaml'
 require 'sidekiq'
+require 'pagy'
+require 'pagy/extras/array'
 require 'socket'
 require 'equestreum'
 
 require_relative 'voting_machine/vote_worker'
+require_relative 'voting_machine/link_set'
+require_relative 'voting_machine/helpers/helpers'
 
 module VotingMachine
   class App < Sinatra::Base
     set :public_folder, 'public'
+    include Pagy::Backend
 
-    QUESTION = YAML.load(
-      File.open(
-        File.join(
-          File.dirname(__FILE__), '..', 'config/question.yml'
-        )
-      )
-    )
+    helpers do
+      include VotingMachine::Helpers
+    end
 
     before do
       headers 'Access-Control-Allow-Origin' => '*',
@@ -32,11 +33,11 @@ module VotingMachine
     end
 
     get '/question' do
-      QUESTION.to_json
+      halt 200, QUESTION.to_json
     end
 
     get '/addresses' do
-      {
+      halt 200, {
         addresses: Socket.
                    ip_address_list.
                    select { |a| a.ipv4? }.
@@ -47,12 +48,36 @@ module VotingMachine
     end
 
     get '/results' do
-      Equestreum::Chain.aggregate.to_json
+      halt 200, Equestreum::Chain.aggregate.to_json
     end
 
     get '/chain' do
-      last = params[:length] ? params[:length].to_i : -1
-      Equestreum::Chain.revive.reverse[0..last].map { |b| b.to_h }.to_json
+      per_page = params[:per_page] ? params[:per_page].to_i : 20
+      chain = Equestreum::Chain.revive
+      data = {chain_length: chain.count}
+      chain.reverse! if params[:reverse]
+      begin
+        pagy, items = pagy_array chain, items: per_page
+        data[:blocks] = items.map { |b| b.to_h }
+      rescue Pagy::OutOfRangeError => oore
+        data[:blocks] = []
+        pagy = oore.pagy
+      end
+
+      response.headers['Link'] =
+        LinkSet.links "#{this_host}/chain", pagy, query_hash: params
+
+      halt 200, data.to_json
+    end
+
+    get '/difficulty' do
+      halt 200, { difficulty: Equestreum::Chain.revive.difficulty }.to_json
+    end
+
+    patch '/difficulty' do
+      diff = JSON.parse(request.body.read)['difficulty']
+      set_difficulty diff
+      halt 200, {updated: 'OK', difficulty: diff}.to_json
     end
 
     post '/vote' do
@@ -60,6 +85,7 @@ module VotingMachine
       VoteWorker.perform_async({
         choice: choice
       })
+      halt 200, {vote: 'OK', choice: choice}.to_json
     end
 
     options '*' do
@@ -82,9 +108,8 @@ module VotingMachine
     end
 
     not_found do
-      content_type :json
-      status 404
-      {found: 'nope'}.to_json
+      #content_type :json
+      halt 404, {found: 'nope'}.to_json
     end
 
     run! if app_file == $0
