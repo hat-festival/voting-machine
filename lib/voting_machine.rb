@@ -42,7 +42,7 @@ module VotingMachine
                    ip_address_list.
                    select { |a| a.ipv4? }.
                    map { |a| a.ip_address }.
-                   delete_if { |a| a[0..2] == '127' }.
+                   delete_if { |a| excluded_ip? a }.
                    sort
       }.to_json
     end
