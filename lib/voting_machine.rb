@@ -48,7 +48,12 @@ module VotingMachine
     end
 
     get '/results' do
-      halt 200, Equestreum::Chain.aggregate.to_json
+      data = Equestreum::Chain.aggregate
+      results = {}
+      data.keys.each do |k|
+        results[QUESTION['options'][k.to_s]] = data[k]
+      end
+      halt 200, results.to_json
     end
 
     get '/chain' do
