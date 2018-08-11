@@ -36,17 +36,6 @@ module VotingMachine
       halt 200, QUESTION.to_json
     end
 
-    get '/addresses' do
-      halt 200, {
-        addresses: Socket.
-                   ip_address_list.
-                   select { |a| a.ipv4? }.
-                   map { |a| a.ip_address }.
-                   delete_if { |a| excluded_ip? a }.
-                   sort
-      }.to_json
-    end
-
     get '/results' do
       data = Equestreum::Chain.aggregate
       results = {}
@@ -91,6 +80,17 @@ module VotingMachine
         choice: choice
       })
       halt 200, {vote: 'OK', choice: choice}.to_json
+    end
+
+    get '/addresses' do
+      halt 200, {
+        addresses: Socket.
+        ip_address_list.
+        select { |a| a.ipv4? }.
+        map { |a| a.ip_address }.
+        delete_if { |a| excluded_ip? a }.
+        sort
+      }.to_json
     end
 
     options '*' do

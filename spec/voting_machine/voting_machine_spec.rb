@@ -9,8 +9,8 @@ module VotingMachine
             'description' => 'Ducks or Horses?',
             'premise' => 'Would you rather fight',
             'options' => {
-              'horses' => 'One hundred duck-sized horses?',
-              'duck' => 'One horse-sized duck?'
+              'horses' => 'One hundred duck-sized horses',
+              'duck' => 'One horse-sized duck'
             }
           }
         )
