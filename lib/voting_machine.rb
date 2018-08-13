@@ -93,6 +93,21 @@ module VotingMachine
       }.to_json
     end
 
+    get '/readme' do
+      body = File.read 'README.md'
+      if params[:gem]
+        body = File.read File.join(Gem.find_latest_files(params[:gem]).last, '..', '..', 'README.md')
+      end
+
+      unless params[:entire]
+        body = body.split("\n").delete_if { |l| l[0..2] == '[![' }.join("\n").strip
+      end
+
+      halt 200, {
+        readme: body
+      }.to_json
+    end
+
     options '*' do
       response.headers['Allow'] = [
         'HEAD',
