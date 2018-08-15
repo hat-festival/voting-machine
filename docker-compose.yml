@@ -6,9 +6,3 @@ services:
     ports:
       - 6379:6379
     restart: always
-
-  mongo:
-    image: mangoraft/mongodb-arm
-    ports:
-      - 27017:27017
-    restart: always

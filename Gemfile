@@ -7,7 +7,7 @@ gem 'puma'
 gem 'sidekiq'
 gem 'foreman'
 gem 'pagy'
-gem 'equestreum' #, path: '../equestreum'
+gem 'equestreum', path: '../equestreum'
 
 group :test do
   gem 'rspec'
