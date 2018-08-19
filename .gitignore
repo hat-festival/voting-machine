@@ -2,3 +2,5 @@ coverage/
 .sass-cache
 chain/
 public/media/sounds/*.mp3
+dump.rdb
+.env

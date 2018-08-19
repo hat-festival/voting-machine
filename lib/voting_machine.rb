@@ -6,11 +6,16 @@ require 'sidekiq'
 require 'pagy'
 require 'pagy/extras/array'
 require 'socket'
+require 'twitter'
+require 'dotenv'
 require 'equestreum'
 
 require_relative 'voting_machine/vote_worker'
+require_relative 'voting_machine/tweet_worker'
 require_relative 'voting_machine/link_set'
 require_relative 'voting_machine/helpers/helpers'
+
+Dotenv.load
 
 module VotingMachine
   class App < Sinatra::Base
