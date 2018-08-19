@@ -3,20 +3,6 @@ module VotingMachine
     include Sidekiq::Worker
 
     def perform choice
-      vote = VotingMachine::Helpers::QUESTION['options'][choice]
-      s = """A vote for %s
-
-Current scores:
-
-""" % VotingMachine::Helpers::QUESTION['options'][choice]
-
-      Equestreum::Chain.aggregate.map do |k, v|
-        s += "%s: %d votes\n" % [VotingMachine::Helpers::QUESTION['options'][k.to_s], v]
-      end
-
-      s += """
-bit.ly/hat-village
-"""
 
       client = Twitter::REST::Client.new do |config|
         config.consumer_key        = ENV["CONSUMER_KEY"]
@@ -25,7 +11,17 @@ bit.ly/hat-village
         config.access_token_secret = ENV["SECRET"]
       end
 
-      client.update s
+      client.update """A vote for %s
+
+Current scores:
+
+%s
+
+bit.ly/hat-village
+      """ % [VotingMachine::Helpers::QUESTION['options'][choice],
+      Equestreum::Chain.aggregate.map do |k, v|
+        "%s: %d votes" % [VotingMachine::Helpers::QUESTION['options'][k.to_s], v]
+      end.join("\n")]
     end
   end
 end
