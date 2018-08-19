@@ -9,7 +9,7 @@ gem 'foreman'
 gem 'pagy'
 gem 'twitter'
 gem 'dotenv'
-gem 'equestreum', path: '../equestreum'
+gem 'equestreum' #, path: '../equestreum'
 
 group :test do
   gem 'rspec'
