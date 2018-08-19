@@ -21,3 +21,35 @@ namespace :run do
     sh 'sidekiq -r ./lib/voting_machine.rb'
   end
 end
+
+namespace :social do
+  namespace :twitter do
+    desc 'delete all tweets'
+    task :purge do
+      client = VotingMachine::Helpers.twitter_client
+      client.user_timeline.each do |t|
+        id = t.id
+        puts "Deleting Tweet #{id}"
+        client.destroy_status id
+      end
+    end
+  end
+
+  namespace :mastodon do
+    desc 'delete all toots'
+    task :purge do
+      client = VotingMachine::Helpers.mastodon_client
+      client.statuses(ENV['MASTODON_ACCOUNT_ID']).map do |s|
+        id = s.id
+        puts "Deleting Toot #{id}"
+        client.destroy_status id
+      end
+    end
+  end
+
+  desc 'destroy all statuses'
+  task :purge do
+    Rake::Task['social:twitter:purge'].invoke
+    Rake::Task['social:mastodon:purge'].invoke
+  end
+end

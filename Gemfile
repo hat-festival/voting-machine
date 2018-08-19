@@ -8,6 +8,7 @@ gem 'sidekiq'
 gem 'foreman'
 gem 'pagy'
 gem 'twitter'
+gem 'mastodon-api'
 gem 'dotenv'
 gem 'equestreum' #, path: '../equestreum'
 
