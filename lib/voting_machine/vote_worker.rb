@@ -11,6 +11,7 @@ module VotingMachine
       end
 
       TweetWorker.perform_async choice
+      MastodonWorker.perform_async choice
     end
   end
 end
