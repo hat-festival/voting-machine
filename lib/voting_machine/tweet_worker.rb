@@ -10,6 +10,8 @@ module VotingMachine
         config.access_token        = ENV["TOKEN"]
         config.access_token_secret = ENV["SECRET"]
       end
+      # require "pry" ; binding.pry
+      # client.user_timeline.map { |t| client.destroy_status t.id }
 
       client.update """A vote for %s
 
