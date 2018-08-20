@@ -1,12 +1,12 @@
 module VotingMachine
-  class TweetWorker
-    include Sidekiq::Worker
+  module SocialWorkers
+    class TweetWorker
+      include Sidekiq::Worker
+      include VotingMachine::SocialUtils
 
-    def perform choice
-      VotingMachine::Helpers.twitter_client.update VotingMachine::Helpers.social_status choice
+      def perform choice
+        twitter_client.update social_status choice
+      end
     end
   end
 end
-
-# require "pry" ; binding.pry
-# client.user_timeline.map { |t| client.destroy_status t.id }

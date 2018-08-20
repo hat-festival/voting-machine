@@ -12,6 +12,7 @@ require 'dotenv'
 require 'equestreum'
 
 require_relative 'voting_machine/vote_worker'
+require_relative 'voting_machine/social_utils'
 require_relative 'voting_machine/social_workers/tweet_worker'
 require_relative 'voting_machine/social_workers/mastodon_worker'
 require_relative 'voting_machine/link_set'
