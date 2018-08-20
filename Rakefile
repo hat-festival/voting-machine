@@ -24,9 +24,11 @@ end
 
 namespace :social do
   namespace :twitter do
+    include VotingMachine::SocialUtils
+
     desc 'delete all tweets'
     task :purge do
-      client = VotingMachine::Helpers.twitter_client
+      client = twitter_client
       client.user_timeline.each do |t|
         id = t.id
         puts "Deleting Tweet #{id}"
@@ -38,7 +40,7 @@ namespace :social do
   namespace :mastodon do
     desc 'delete all toots'
     task :purge do
-      client = VotingMachine::Helpers.mastodon_client
+      client = mastodon_client
       client.statuses(ENV['MASTODON_ACCOUNT_ID']).map do |s|
         id = s.id
         puts "Deleting Toot #{id}"

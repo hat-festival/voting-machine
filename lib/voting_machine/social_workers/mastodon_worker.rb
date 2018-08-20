@@ -1,9 +1,12 @@
 module VotingMachine
-  class MastodonWorker
-    include Sidekiq::Worker
+  module SocialWorkers
+    class MastodonWorker
+      include Sidekiq::Worker
+      include VotingMachine::SocialUtils
 
-    def perform choice
-      VotingMachine::Helpers.mastodon_client.create_status VotingMachine::Helpers.social_status choice
+      def perform choice
+        mastodon_client.create_status social_status choice
+      end
     end
   end
 end

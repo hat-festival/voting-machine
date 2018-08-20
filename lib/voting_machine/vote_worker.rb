@@ -10,8 +10,8 @@ module VotingMachine
         Process.wait2
       end
 
-      TweetWorker.perform_async choice
-      MastodonWorker.perform_async choice
+      SocialWorkers::TweetWorker.perform_async choice
+      SocialWorkers::MastodonWorker.perform_async choice
     end
   end
 end
